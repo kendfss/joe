@@ -15,7 +15,7 @@ formatter?=$(shell which gofumpt)
 
 mansrc?=$(root)/README.md
 ifeq ($(shell uname),Linux)
-	mandir?=/usr/local/man
+	mandir?=/usr/local/man/man1
 endif
 ifeq ($(shell uname),Darwin)
 	mandir?=/usr/local/share/man/man1
