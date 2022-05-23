@@ -100,7 +100,7 @@ func generate(args string) {
 	but.Exit(err)
 
 	notFound := []string{}
-	output := "*.DS_Store\n._*\n"
+	output := ".DS_Store\n._*\n"
 	for _, name := range names {
 		if filepath, ok := gitignores[strings.ToLower(name)]; ok {
 			bytes, err := ioutil.ReadFile(filepath)
