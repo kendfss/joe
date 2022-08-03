@@ -12,7 +12,7 @@ import (
 )
 
 func DownloadFiles(url, dataPath string) (err error) {
-	archivePath := path.Join("/tmp", "master.zip")
+	archivePath := path.Join(os.TempDir(), "master.zip")
 
 	// Create the file
 	out, err := os.Create(archivePath)
@@ -36,10 +36,10 @@ func DownloadFiles(url, dataPath string) (err error) {
 
 	// Unzip
 	// err = unzip(archivePath, "/tmp")
-	err = unzipSource(archivePath, "/tmp")
+	err = unzipSource(archivePath, os.TempDir())
 	but.Must(err)
 
-	err = shutil.CopyTree(path.Join("/tmp", "gitignore-main"), dataPath, nil)
+	err = shutil.CopyTree(path.Join(os.TempDir(), "gitignore-main"), dataPath, nil)
 	but.Must(err)
 
 	return nil
