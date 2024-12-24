@@ -44,17 +44,11 @@ post:
 
 build: $(prefix) pre $(builddir)
 	GOOS=$(goos) GOARCH=$(arch) go build $(ldflags) -o $(builddir)/$(name)$(ext) $(srcpath)
-man: $(shell which pandoc) $(mandir) $(builddir)
-	@pandoc $(mansrc) -s -t man -o $(builddir)/$(name).1
 
-
-
-install: build man
+install: build 
 	mv $(builddir)/$(name)$(ext) $(prefix)/
-	mv $(builddir)/$(name).1 $(mandir)/
 uninstall:
 	rm -f $(prefix)/$(name)$(ext)
-	rm -f $(mandir)/$(name).1
 
 
 

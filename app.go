@@ -59,7 +59,7 @@ func init() {
 				fmt.Println("Updating gitignore files..")
 				// err := RemoveContents(dataPath)
 				err := os.RemoveAll(dataPath)
-				but.Exif(err)
+				but.Exif(err != nil, err)
 
 				err = DownloadFiles(gitignoreUrl, dataPath)
 				if err != nil {
@@ -75,7 +75,7 @@ func init() {
 			Usage:   "generate gitignore files",
 			Action: func(c *cli.Context) error {
 				if c.NArg() != 1 {
-					cli.ShowAppHelp(c)
+					return cli.ShowAppHelp(c)
 				} else {
 					generate(c.Args()[0])
 				}
@@ -88,7 +88,7 @@ func init() {
 			Usage:   "search for gitignore files (one word per query)",
 			Action: func(c *cli.Context) error {
 				if c.NArg() != 1 {
-					cli.ShowAppHelp(c)
+					return cli.ShowAppHelp(c)
 				} else {
 					search(c.Args()[0])
 				}

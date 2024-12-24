@@ -27,27 +27,27 @@ var (
 func init() {
 	var err error
 	userHome, err = os.UserHomeDir()
-	but.Exif(err)
+	but.Exif(err != nil, err)
 
 	dataPath = path.Join(userHome, dataDir)
 }
 
 func findGitignores() (a map[string]string, err error) {
-	_, err = ioutil.ReadDir(dataPath)
+	_, err = os.ReadDir(dataPath)
 	if err != nil {
 		return nil, err
 	}
 
 	filelist := make(map[string]string)
-	filepath.Walk(dataPath, func(filepath string, info os.FileInfo, err error) error {
-		but.Exif(err)
+	err = filepath.Walk(dataPath, func(filepath string, info os.FileInfo, err error) error {
+		but.Exif(err != nil, err)
 		if strings.HasSuffix(info.Name(), ".gitignore") {
 			name := strings.ToLower(strings.Replace(info.Name(), ".gitignore", "", 1))
 			filelist[name] = filepath
 		}
 		return nil
 	})
-	return filelist, nil
+	return filelist, err
 }
 
 func availableFiles() (a []string, err error) {
@@ -66,7 +66,7 @@ func availableFiles() (a []string, err error) {
 
 func search(arg string) {
 	gitignores, err := findGitignores()
-	but.Exif(err)
+	but.Exif(err != nil, err)
 
 	for ig := range gitignores {
 		b, err := regexp.MatchString(arg, ig)
@@ -82,7 +82,7 @@ func generate(args string) {
 	names := strings.Split(args, ",")
 
 	gitignores, err := findGitignores()
-	but.Exif(err)
+	but.Exif(err != nil, err)
 
 	notFound := []string{}
 	// output := ".DS_Store\n._*\n"
@@ -109,5 +109,6 @@ func generate(args string) {
 }
 
 func main() {
-	app.Run(os.Args)
+	err := app.Run(os.Args)
+	but.Exif(err != nil, err)
 }
